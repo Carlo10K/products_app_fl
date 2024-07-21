@@ -43,7 +43,7 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _LoginForm extends StatelessWidget {
-  const _LoginForm({super.key});
+  const _LoginForm();
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +99,7 @@ class _LoginForm extends StatelessWidget {
                       FocusScope.of(context).unfocus();
                       if (!loginForm.isValidForm()) return;
                       loginForm.isloading = true;
-                      await Future.delayed(Duration(seconds: 2));
+                      await Future.delayed(const Duration(seconds: 2));
                       //validar en el backend.
                       loginForm.isloading = false;
                       Navigator.pushReplacementNamed(context, '/home');
@@ -109,7 +109,7 @@ class _LoginForm extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
                   child: Text(
                     loginForm.isLoading ? 'Espere..' : 'Ingresar',
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   )))
         ],
       ),

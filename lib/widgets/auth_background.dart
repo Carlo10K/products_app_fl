@@ -18,7 +18,7 @@ class AuthBackground extends StatelessWidget {
 }
 
 class _PurpleBox extends StatelessWidget {
-  const _PurpleBox({super.key});
+  const _PurpleBox();
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +50,7 @@ class _PurpleBox extends StatelessWidget {
 }
 
 class _HeaderIcon extends StatelessWidget {
-  const _HeaderIcon({
-    super.key,
-  });
+  const _HeaderIcon();
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +75,7 @@ class _Bubble extends StatelessWidget {
       height: 100,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: Color.fromRGBO(255, 255, 255, 0.05)),
+          color: const Color.fromRGBO(255, 255, 255, 0.05)),
     );
   }
 }

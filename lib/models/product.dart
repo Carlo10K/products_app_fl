@@ -5,13 +5,14 @@ class Product {
   String name;
   String? picture;
   double price;
+  String? id;
 
-  Product({
-    required this.available,
-    required this.name,
-    this.picture,
-    required this.price,
-  });
+  Product(
+      {required this.available,
+      required this.name,
+      this.picture,
+      required this.price,
+      this.id});
 
   factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
 

@@ -22,7 +22,7 @@ class ProductImage extends StatelessWidget {
                     image: AssetImage('assets/no-image.png'), fit: BoxFit.cover)
                 : FadeInImage(
                     image: NetworkImage(url!),
-                    placeholder: AssetImage('assets/jar-loading.gif'),
+                    placeholder: const AssetImage('assets/jar-loading.gif'),
                     fit: BoxFit.cover,
                   ),
           ),

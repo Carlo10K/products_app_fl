@@ -91,7 +91,7 @@ class _PriceTag extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
-            '\$ ${price}',
+            '\$ $price',
             style: const TextStyle(color: Colors.white),
           ),
         ),

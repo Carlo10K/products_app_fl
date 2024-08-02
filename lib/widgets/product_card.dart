@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:products_app/models/models.dart';
 
@@ -153,20 +155,26 @@ class _BackgroundImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(25),
-      child: SizedBox(
-        width: double.infinity,
-        height: 400,
-        child: url == null
-            ? const Image(
-                image: AssetImage('assets/no-image.png'),
-                fit: BoxFit.cover,
-              )
-            : FadeInImage(
-                placeholder: const AssetImage('assets/jar-loading.gif'),
-                image: NetworkImage(url!),
-                fit: BoxFit.cover,
-              ),
-      ),
+      child:
+          SizedBox(width: double.infinity, height: 400, child: getImage(url)),
+    );
+  }
+
+  Widget getImage(String? picture) {
+    if (picture == null) {
+      return const Image(
+          image: AssetImage('assets/no-image.png'), fit: BoxFit.cover);
+    }
+    if (picture.startsWith('http')) {
+      return FadeInImage(
+        image: NetworkImage(url!),
+        placeholder: const AssetImage('assets/jar-loading.gif'),
+        fit: BoxFit.cover,
+      );
+    }
+    return Image.file(
+      File(picture),
+      fit: BoxFit.cover,
     );
   }
 }

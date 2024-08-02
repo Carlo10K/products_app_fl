@@ -11,6 +11,8 @@ class ProductsService extends ChangeNotifier {
   final List<Product> products = [];
   late Product selectedProduct;
   bool isLoading = true;
+  bool isSaving = false;
+
   File? newPictureFile;
 
   ProductsService() {
@@ -36,11 +38,17 @@ class ProductsService extends ChangeNotifier {
   }
 
   Future saveOrCreateProduct(Product product) async {
+    isSaving = true;
+    notifyListeners();
+
     if (product.id == null) {
       createProduct(product);
     } else {
       updateProduct(product);
     }
+
+    isSaving = false;
+    notifyListeners();
   }
 
   Future<String> updateProduct(Product product) async {
@@ -50,7 +58,6 @@ class ProductsService extends ChangeNotifier {
     final index = products.indexWhere((element) => element.id == product.id);
     products[index] = product;
     notifyListeners();
-
     return product.id!;
   }
 
@@ -62,7 +69,6 @@ class ProductsService extends ChangeNotifier {
     product.id = data['name'];
     products.add(product);
     notifyListeners();
-
     return product.id!;
   }
 
@@ -71,5 +77,32 @@ class ProductsService extends ChangeNotifier {
     newPictureFile = File.fromUri(Uri(path: path));
 
     notifyListeners();
+  }
+
+  Future<String?> uploadImage() async {
+    if (newPictureFile == null) return null;
+
+    isSaving = true;
+    notifyListeners();
+
+    final url = Uri.parse(
+        'https://api.cloudinary.com/v1_1/ditdb8p6g/image/upload?upload_preset=product_app_fl');
+    final imageUploadRequest = http.MultipartRequest('POST', url);
+    final file =
+        await http.MultipartFile.fromPath('file', newPictureFile!.path);
+
+    imageUploadRequest.files.add(file);
+
+    final streamRes = await imageUploadRequest.send();
+    final res = await http.Response.fromStream(streamRes);
+
+    if (res.statusCode != 200 && res.statusCode != 201) {
+      print(res.body);
+      return null;
+    }
+
+    newPictureFile = null;
+    final data = json.decode(res.body);
+    return data['secure_url'];
   }
 }

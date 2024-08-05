@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:products_app/providers/login_form_provider.dart';
+import 'package:products_app/services/services.dart';
 import 'package:products_app/ui/input_decorations.dart';
 import 'package:products_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -104,12 +105,22 @@ class _LoginForm extends StatelessWidget {
                   ? null
                   : () async {
                       FocusScope.of(context).unfocus();
+                      final authService =
+                          Provider.of<AuthService>(context, listen: false);
+
                       if (!loginForm.isValidForm()) return;
                       loginForm.isloading = true;
-                      await Future.delayed(const Duration(seconds: 2));
-                      //validar en el backend.
+
+                      final String? errorMessage = await authService.createUser(
+                          loginForm.email, loginForm.passsword);
+
+                      if (errorMessage == null) {
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushReplacementNamed(context, '/home');
+                      } else {
+                        loginForm.errorMessage = errorMessage;
+                      }
                       loginForm.isloading = false;
-                      Navigator.pushReplacementNamed(context, '/home');
                     },
               child: Container(
                   padding:
@@ -117,7 +128,13 @@ class _LoginForm extends StatelessWidget {
                   child: Text(
                     loginForm.isLoading ? 'Espere..' : 'Ingresar',
                     style: const TextStyle(color: Colors.white),
-                  )))
+                  ))),
+          const SizedBox(height: 8),
+          if (loginForm.errorMessage != '')
+            Text(
+              loginForm.errorMessage,
+              style: const TextStyle(color: Colors.red),
+            )
         ],
       ),
     );

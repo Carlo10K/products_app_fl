@@ -119,7 +119,7 @@ class _LoginForm extends StatelessWidget {
                         // ignore: use_build_context_synchronously
                         Navigator.pushReplacementNamed(context, '/home');
                       } else {
-                        loginForm.errorMessage = errorMessage;
+                        NotificationsService.showSnackBar(errorMessage);
                       }
                       loginForm.isloading = false;
                     },
@@ -130,12 +130,6 @@ class _LoginForm extends StatelessWidget {
                     loginForm.isLoading ? 'Espere..' : 'Ingresar',
                     style: const TextStyle(color: Colors.white),
                   ))),
-          const SizedBox(height: 8),
-          if (loginForm.errorMessage != '')
-            Text(
-              loginForm.errorMessage,
-              style: const TextStyle(color: Colors.red),
-            )
         ],
       ),
     );
